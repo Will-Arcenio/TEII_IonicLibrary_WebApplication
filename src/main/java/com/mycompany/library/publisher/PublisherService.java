@@ -1,5 +1,5 @@
 
-package com.mycompany.library.resources;
+package com.mycompany.library.publisher;
 
 import java.util.List;
 import javax.ejb.Stateless;
