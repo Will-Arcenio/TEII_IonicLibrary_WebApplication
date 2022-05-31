@@ -8,9 +8,9 @@ public enum Genero {
     SUSPENSE("Suspense"),
     FICCAO_CIENTIFICA ("Ficção Científica"),
     FANTASIA("Fantasia"),
-    HORROR("Horror");
-    POESIA("Poesia");
-    ROMANCE("Romance");
+    HORROR("Horror"),
+    POESIA("Poesia"),
+    ROMANCE("Romance"),
     RELIGIOSO("Religioso");
     
     private String descricao;

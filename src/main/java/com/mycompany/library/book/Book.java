@@ -1,14 +1,23 @@
 package com.mycompany.library.book;
 
+import com.mycompany.library.author.Author;
+import com.mycompany.library.publisher.Publisher;
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
+import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -20,98 +29,98 @@ public class Book implements Serializable{
     private Long id;
     
     @Column(nullable = false)
-    private String nome;
+    private String referencia;
     
     @Column(nullable = false)
-    private String referencia;
+    private String nome;
+    
+    @Column
+    private String sinopse;
     
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private Genero genero;
     
-    @Column
-    private String sinopse;
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "books_authors",
+            joinColumns = @JoinColumn(name = "id_book"),
+            foreignKey = @ForeignKey(name = "fk_books"),
+            inverseJoinColumns = @JoinColumn(name = "id_author"),
+            inverseForeignKey = @ForeignKey(name = "fk_authors")
+    )
+    private List<Author> autor;
+    
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "id_publisher", foreignKey = @ForeignKey(name = "fk_id_publisher"))
+    private Publisher editora;
     
     @Column
     private LocalDate publicacao;
     
     @Column(nullable = false)
-    private String imagem;
-
-    @Column
-    private String autor;
-
-    @Column(nullable = false)
     private Float preco;
-
-    @Column
-    private String editora;
+    
+    @Column(nullable = false)
+    private String imagem;
     
 //    Constructors
-    public Author() {
-        this.nome = "NOME PADRÃO";
-        this.referencia = "REFERÊNCIA PADRÃO";
-        this.genero = Genero.SUSPENSE;
-        this.sinopse = "SINOPSE PADRÃO";
-        this.publicacao = LocalDate.now();
-        this.imagem = "ImagemPadrão.png";
-        this.autor = "AUTOR PADRÃO";
-        this.preco = 0.1;
-        this.editora = "EDITORA PADRÃO";
 
-    }
-
-    public Author(String nome, String referencia, Genero genero, String sinopse, LocalDate publicacao, String imagem, String autor, Float preco, String editora ) {
-        this.nome = nome;
-        this.referencia = sobrenome;
-        this.genero = genero;
-        this.sinopse = sinopse;
-        this.publicacao = publicacao;
-        this.imagem = imagem;
-        this.autor = autor;
-        this.preco = preco;
-        this.editora = editora;
-    }
+    public Book() {
     
+    }
+
+    public Book(String referencia, String nome, String sinopse, Genero genero, List<Author> autor, Publisher editora, LocalDate publicacao, Float preco, String imagem) {
+        this.referencia = referencia;
+        this.nome = nome;
+        this.sinopse = sinopse;
+        this.genero = genero;
+        this.autor = autor;
+        this.editora = editora;
+        this.publicacao = publicacao;
+        this.preco = preco;
+        this.imagem = imagem;
+    }
+
 //    Setters
     public void setId(Long id) {
         this.id = id;
     }
 
-    public void setNome(String nome) {
-        this.nome = nome.trim().isEmpty() ? "NOME PADRÃO" : nome;
+    public void setReferencia(String referencia) {
+        this.referencia = referencia;
     }
 
-    public void setReferencia(String referencia) {
-        this.referencia = referencia.trim().isEmpty() ? "REFERÊNCIA PADRÃO" : referencia;
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public void setSinopse(String sinopse) {
+        this.sinopse = sinopse;
     }
 
     public void setGenero(Genero genero) {
         this.genero = genero;
     }
 
-    public void setSinopse(String sinopse) {
-        this.sinopse = sinopse.trim().isEmpty() ? "SINOPSE PADRÃO" : sinopse.toLowerCase();
+    public void setAutor(List<Author> autor) {
+        this.autor = autor;
+    }
+
+    public void setEditora(Publisher editora) {
+        this.editora = editora;
     }
 
     public void setPublicacao(LocalDate publicacao) {
         this.publicacao = publicacao;
     }
 
-    public void setImagem(String imagem) {
-        this.imagem = imagem.trim().isEmpty() ? "ImagemPadrão.png" : imagem.toLowerCase();
-    }
-
-    public void setAutor(String autor) {
-        this.autor = autor.trim().isEmpty() ? "AUTOR PADRÃO" : autor.toLowerCase();
-    }
-
     public void setPreco(Float preco) {
         this.preco = preco;
     }
 
-    public void setEditor(String editora) {
-        this.editora = editora.trim().isEmpty() ? "EDITORA PADRÃO" : editora.toLowerCase();
+    public void setImagem(String imagem) {
+        this.imagem = imagem;
     }
     
 //    Getters
@@ -119,37 +128,40 @@ public class Book implements Serializable{
         return this.id;
     }
 
-    public String getNome() {
-        return this.nome;
-    }
-
     public String getReferencia() {
         return this.referencia;
     }
 
-    public Genero getGenero() {
-        return this.genero;
+    public String getNome() {
+        return this.nome;
     }
 
     public String getSinopse() {
         return this.sinopse;
     }
 
+    public Genero getGenero() {
+        return this.genero;
+    }
+
+    public List<Author> getAutor() {
+        return this.autor;
+    }
+
+    public Publisher getEditora() {
+        return this.editora;
+    }
+
     public LocalDate getPublicacao() {
         return this.publicacao;
     }
 
-    public String getImagem() {
-        return this.imagem;
-    }
-    public String getAutor() {
-        return this.autor;
-    }    
     public Float getPreco() {
         return this.preco;
     }
-    public String getEditora() {
-        return this.editora;
+
+    public String getImagem() {
+        return this.imagem;
     }
     
 }
