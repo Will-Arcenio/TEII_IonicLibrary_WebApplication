@@ -64,11 +64,11 @@ public class Author implements Serializable{
     }
 
     public void setNome(String nome) {
-        this.nome = nome.trim().isEmpty() ? "NOME PADRÃO" : nome;
+        this.nome = nome;
     }
 
     public void setSobrenome(String sobrenome) {
-        this.sobrenome = sobrenome.trim().isEmpty() ? "SOBRENOME PADRÃO" : sobrenome;
+        this.sobrenome = sobrenome;
     }
 
     public void setNacionalidade(Nacionalidade nacionalidade) {
@@ -76,7 +76,7 @@ public class Author implements Serializable{
     }
 
     public void setRedes(String redes) {
-        this.redes = redes.trim().isEmpty() ? "@rede_padrão" : redes.toLowerCase();
+        this.redes = redes.toLowerCase();
     }
 
     public void setNascimento(LocalDate nascimento) {
@@ -84,7 +84,7 @@ public class Author implements Serializable{
     }
 
     public void setRetrato(String retrato) {
-        this.retrato = retrato.trim().isEmpty() ? "RetratoPadrão.png" : retrato.toLowerCase();
+        this.retrato = retrato.toLowerCase();
     }
     
 //    Getters

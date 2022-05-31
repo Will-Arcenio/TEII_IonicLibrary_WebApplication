@@ -43,14 +43,7 @@ public class Publisher implements Serializable{
     
 //    Constructors
     public Publisher() {
-    this.nome = "NOME-PADRÃO";
-    this.endereco = "ENDEREÇO-PADRÃO";
-    this.telefone = "TELEFONE-PADRÃO";
-    this.foto = "FOTO-PADRÃO";
-    this.site = "SITE-PADRÃO";
-    this.email = "EMAIL-PADRÃO";
-    this.localizacao = "LOCALIZAÇÃO-PADRÃO";
-    this.iframeMap = "IFRAMEMAP-PADRÃO";
+        
     }
     
     public Publisher(String nome, String endereco, String telefone, String foto, String site, String email, String localizacao, String iframeMap) {
@@ -71,35 +64,35 @@ public class Publisher implements Serializable{
     }
     
     public void setNome(String nome) {
-        this.nome = nome.trim().isEmpty() ? "NOME PADRÃO" : nome;
+        this.nome = nome;
     }
     
     public void setEndereco(String endereco) {
-        this.endereco = endereco.trim().isEmpty() ? "ENDEREÇO PADRÃO" : endereco;
+        this.endereco = endereco;
     }
     
     public void setTelefone(String telefone) {
-        this.telefone = telefone.trim().isEmpty() ? "(00) 90000-0000" : telefone;
+        this.telefone = telefone;
     }
     
     public void setFoto(String foto) {
-        this.foto = foto.trim().isEmpty() ? "FOTO PADRÃO" : foto.toLowerCase();
+        this.foto = foto.toLowerCase();
     }
     
     public void setSite(String site) {
-        this.site = site.trim().isEmpty() ? "site_padrão.com.br" : site.toLowerCase();
+        this.site = site.toLowerCase();
     }
     
     public void setEmail(String email) {
-        this.email = email.trim().isEmpty() ? "email_padrão@email.com" : email.toLowerCase();
+        this.email = email.toLowerCase();
     }
     
     public void setLocalizacao(String localizacao) {
-        this.localizacao = localizacao.trim().isEmpty() ? "LOCALIZAÇÃO PADRÃO" : localizacao.toLowerCase();
+        this.localizacao = localizacao.toLowerCase();
     }
     
     public void setIframeMap(String iframeMap) {
-        this.iframeMap = iframeMap.trim().isEmpty() ? "IFRAMEMAP PADRÃO" : iframeMap.toLowerCase();
+        this.iframeMap = iframeMap.toLowerCase();
     }
     
     
