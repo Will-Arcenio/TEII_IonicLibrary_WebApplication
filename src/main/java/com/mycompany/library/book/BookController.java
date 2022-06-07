@@ -1,6 +1,8 @@
 package com.mycompany.library.book;
 
 import java.util.List;
+import com.mycompany.library.regrasnegocio.RegraNegocioMensagem;
+import com.mycompany.library.regrasnegocio.RegraNegocioException;
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -41,8 +43,16 @@ public class BookController {
     }
     
     @POST
-    public Book add(Book book) {
-        return this.bookService.add(book);
+    public Response add(Book book) {
+        try{
+            Book bookAdicionado = this.bookService.add(book);
+            return Response.status(Response.Status.CREATED).entity(bookAdicionado).build();
+            
+        }catch (RegraNegocioException e ){
+            return Response.status(Response.Status.BAD_REQUEST).entity(
+                new RegraNegocioMensagem(e.getMessage())
+            ).build();
+        }
     }
     
     @DELETE
@@ -58,14 +68,20 @@ public class BookController {
     
     @PUT
     @Path("{id}")
-    public Book update(@PathParam("id") Long id, Book bookUpdated) {
+    public Response update(@PathParam("id") Long id, Book bookUpdated) {
         Book bookFinded = this.bookService.findById(id);
         if (bookFinded == null) {
             throw new NotFoundException("Livro não encontrado(a)");
         }
         
         bookUpdated.setId(id);
-        return this.bookService.update(bookUpdated);
+        try {
+            return Response.ok(this.bookService.update(bookUpdated)).build();
+        } catch (RegraNegocioException e) {
+            return Response.status(Response.Status.BAD_REQUEST).entity(
+                    new RegraNegocioMensagem(e.getMessage())
+            ).build();
+        }
     }
     
     @GET
