@@ -5,6 +5,7 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import com.mycompany.library.regrasnegocio.RegraNegocioException;
+import java.time.LocalDate;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Response;
 
@@ -31,13 +32,19 @@ public class BookService {
     
     public Book update(Book bookUpdated) throws RegraNegocioException {
         valida(bookUpdated);
+         valida(bookUpdated);
         entityManager.merge(bookUpdated);
         return bookUpdated;
     }
     
     private void valida(Book book) throws RegraNegocioException {
+        valida(book);
         validaExistenciaReferencia(book);
         validaExistenciaBook(book);
+        
+        if (LocalDate.now().isAfter(book.getPublicacao())) {
+            throw new WebApplicationException("A data de publicação do livro não pode ser maior que a data de hoje", Response.Status.BAD_REQUEST);
+        }
     }
     
     private void validaExistenciaReferencia(Book book) throws RegraNegocioException {
