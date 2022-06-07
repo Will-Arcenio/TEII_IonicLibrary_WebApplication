@@ -1,6 +1,7 @@
 
 package com.mycompany.library.author;
 
+import java.time.LocalDate;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -20,6 +21,7 @@ public class AuthorService {
     
     public Author add(Author author) {
         this.checkAuthorExist(author);
+        this.checkAuthorAge(author);
         entityManager.persist(author);
         return author;
     }
@@ -29,6 +31,7 @@ public class AuthorService {
     }
     
     public Author update(Author authorUpdated) {
+        this.checkAuthorAge(authorUpdated);
         entityManager.merge(authorUpdated);
         return authorUpdated;
     }
@@ -56,6 +59,22 @@ public class AuthorService {
         if (resultList != null && !resultList.isEmpty()) {
             throw new WebApplicationException("O Autor '" + author.getNome() + " " + author.getSobrenome() + "' já está cadastrado na base.",Response.Status.BAD_REQUEST);
                     
+        }
+    }
+    
+    /* VALIDA SE O AUTOR POSSUI A IDADE MAIOR QUE 5 ANOS*/
+    public void checkAuthorAge(Author author) {
+        LocalDate authorBorn = author.getNascimento();
+        LocalDate today = LocalDate.now();
+        
+        //
+//        if ((today.getYear() - authorBorn.getYear()) <= 5) {
+//            throw new WebApplicationException("O Autor precisa ter 6 anos ou mais.", Response.Status.BAD_REQUEST);
+//        }
+
+        //
+        if (today.compareTo(authorBorn) < 6) {
+            throw new WebApplicationException("O Autor precisa ter 6 anos ou mais.", Response.Status.BAD_REQUEST);
         }
     }
     
