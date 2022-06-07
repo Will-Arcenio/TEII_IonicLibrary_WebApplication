@@ -5,6 +5,8 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import com.mycompany.library.regrasnegocio.RegraNegocioException;
+import javax.ws.rs.WebApplicationException;
+import javax.ws.rs.core.Response;
 
 @Stateless
 public class BookService {
@@ -18,6 +20,7 @@ public class BookService {
     
     public Book add(Book book) throws RegraNegocioException {
         valida(book);
+        this.checkPrice(book);
         entityManager.persist(book);
         return book;
     }
@@ -43,7 +46,7 @@ public class BookService {
                 .setParameter("referencia", book.getReferencia().toLowerCase())
                 .getResultList();
         if(resultList != null && !resultList.isEmpty()) {
-            throw new RegraNegocioException("A referencia já está cadastrada em nossa base");
+            throw new RegraNegocioException("A referencia '" + book.getReferencia() + "' já está cadastrada em nossa base");
         }
     }
 
@@ -53,7 +56,7 @@ public class BookService {
                 .setParameter("nome", book.getNome().toLowerCase())
                 .getResultList();
         if(resultList != null && !resultList.isEmpty()) {
-            throw new RegraNegocioException("O livro já está cadastrado em nossa base");
+            throw new RegraNegocioException("O livro '" + book.getNome() + "' já está cadastrado em nossa base");
         }
     }
     
@@ -66,6 +69,16 @@ public class BookService {
                 .createQuery("SELECT b FROM Book nome b WHERE LOWER(b.nome) LIKE :nome", Book.class)
                 .setParameter("nome", "%" + nome.toLowerCase() + "%")
                 .getResultList();
+    }
+    
+    
+//  Regras de Negócio / Validações
+    /* VALIDA PREÇO DO LIVRO */
+    public void checkPrice(Book book) {
+        Float checkBookPrice = book.getPreco();
+        if (checkBookPrice < 0) {
+            throw new WebApplicationException("O preço do livro precisa ser maior ou igual a 0 (zero).", Response.Status.BAD_REQUEST);
+        }
     }
     
 }
