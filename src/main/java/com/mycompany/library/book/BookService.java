@@ -6,11 +6,14 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import com.mycompany.library.regrasnegocio.RegraNegocioException;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Response;
 
 @Stateless
 public class BookService {
+    
+    DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("dd/MM/yyyy");
     
     @PersistenceContext(unitName = "LibraryPU")
     private EntityManager entityManager;
@@ -22,6 +25,7 @@ public class BookService {
     public Book add(Book book) throws RegraNegocioException {
         valida(book);
         this.checkPrice(book);
+        this.checkPublicationDate(book);
         entityManager.persist(book);
         return book;
     }
@@ -32,19 +36,14 @@ public class BookService {
     
     public Book update(Book bookUpdated) throws RegraNegocioException {
         valida(bookUpdated);
-         valida(bookUpdated);
+        this.checkPublicationDate(bookUpdated);
         entityManager.merge(bookUpdated);
         return bookUpdated;
     }
     
     private void valida(Book book) throws RegraNegocioException {
-        valida(book);
         validaExistenciaReferencia(book);
         validaExistenciaBook(book);
-        
-        if (LocalDate.now().isAfter(book.getPublicacao())) {
-            throw new WebApplicationException("A data de publicação do livro não pode ser maior que a data de hoje", Response.Status.BAD_REQUEST);
-        }
     }
     
     private void validaExistenciaReferencia(Book book) throws RegraNegocioException {
@@ -85,6 +84,13 @@ public class BookService {
         Float checkBookPrice = book.getPreco();
         if (checkBookPrice < 0) {
             throw new WebApplicationException("O preço do livro precisa ser maior ou igual a 0 (zero).", Response.Status.BAD_REQUEST);
+        }
+    }
+    
+    /* VALIDA SE A DATA DE PUBLICAÇÃO É MAIOR QUE A DATA ATUAL */
+    public void checkPublicationDate(Book book) {
+        if (!LocalDate.now().isAfter(book.getPublicacao()) && !book.getPublicacao().isEqual(LocalDate.now()) ) {
+            throw new WebApplicationException("A data de publicação do livro não pode ser maior que a data de hoje (" + LocalDate.now().format(dateFormat) + ")", Response.Status.BAD_REQUEST);
         }
     }
     
