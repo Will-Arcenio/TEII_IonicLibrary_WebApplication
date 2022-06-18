@@ -86,7 +86,7 @@ public class Author implements Serializable{
     }
 
     public void setRetrato(String retrato) {
-        this.retrato = retrato.toLowerCase();
+        this.retrato = retrato;
     }
     
 //    Getters
