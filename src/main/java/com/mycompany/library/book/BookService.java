@@ -52,7 +52,7 @@ public class BookService {
                 .setParameter("referencia", book.getReferencia().toLowerCase())
                 .getResultList();
         if(resultList != null && !resultList.isEmpty()) {
-            throw new RegraNegocioException("A referencia '" + book.getReferencia() + "' já está cadastrada em nossa base");
+            throw new RegraNegocioException("A referencia '<strong>" + book.getReferencia() + "</strong>' já está cadastrada em nossa base");
         }
     }
 
@@ -62,7 +62,7 @@ public class BookService {
                 .setParameter("nome", book.getNome().toLowerCase())
                 .getResultList();
         if(resultList != null && !resultList.isEmpty()) {
-            throw new RegraNegocioException("O livro '" + book.getNome() + "' já está cadastrado em nossa base");
+            throw new RegraNegocioException("O livro '<strong>" + book.getNome() + "</strong>' já está cadastrado em nossa base");
         }
     }
     
@@ -90,7 +90,7 @@ public class BookService {
     /* VALIDA SE A DATA DE PUBLICAÇÃO É MAIOR QUE A DATA ATUAL */
     public void checkPublicationDate(Book book) {
         if (!LocalDate.now().isAfter(book.getPublicacao()) && !book.getPublicacao().isEqual(LocalDate.now()) ) {
-            throw new WebApplicationException("A data de publicação do livro não pode ser maior que a data de hoje (" + LocalDate.now().format(dateFormat) + ")", Response.Status.BAD_REQUEST);
+            throw new WebApplicationException("A data de publicação do livro não pode ser maior que a data de hoje <strong>(" + LocalDate.now().format(dateFormat) + ")</strong>", Response.Status.BAD_REQUEST);
         }
     }
     

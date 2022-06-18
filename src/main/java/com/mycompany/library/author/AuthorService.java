@@ -57,7 +57,7 @@ public class AuthorService {
                 .getResultList();
         
         if (resultList != null && !resultList.isEmpty()) {
-            throw new WebApplicationException("O Autor '" + author.getNome() + " " + author.getSobrenome() + "' já está cadastrado na base.",Response.Status.BAD_REQUEST);
+            throw new WebApplicationException("O Autor '<strong>" + author.getNome() + " " + author.getSobrenome() + "</strong>' já está cadastrado na base.",Response.Status.BAD_REQUEST);
                     
         }
     }
