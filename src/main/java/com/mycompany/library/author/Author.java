@@ -10,14 +10,16 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 @Entity
 @Table(name = "authors", schema = "public")
+@SequenceGenerator(name = "AUTHOR_SEQ", sequenceName = "AUTHOR_SEQ")
 public class Author implements Serializable{
     
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "AUTHOR_SEQ")
     private Long id;
     
     @Column(nullable = false)
