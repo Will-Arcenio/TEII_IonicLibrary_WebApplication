@@ -24,12 +24,11 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "books", schema = "public")
-@SequenceGenerator(name = "BOOK_SEQ", sequenceName = "BOOK_SEQ")
 public class Book implements Serializable{
     
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "BOOK_SEQ")
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
     
     @Column(nullable = false)
     private String referencia;
@@ -37,7 +36,7 @@ public class Book implements Serializable{
     @Column(nullable = false)
     private String nome;
     
-    @Column
+    @Column(columnDefinition = "TEXT")
     private String sinopse;
     
     @Enumerated(EnumType.STRING)
@@ -64,7 +63,7 @@ public class Book implements Serializable{
     @Column(nullable = false)
     private Float preco;
     
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "TEXT")
     private String imagem;
     
 //    Constructors
@@ -86,7 +85,7 @@ public class Book implements Serializable{
     }
 
 //    Setters
-    public void setId(Long id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -127,7 +126,7 @@ public class Book implements Serializable{
     }
     
 //    Getters
-    public Long getId() {
+    public long getId() {
         return this.id;
     }
 

@@ -10,17 +10,15 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 @Entity
 @Table(name = "authors", schema = "public")
-@SequenceGenerator(name = "AUTHOR_SEQ", sequenceName = "AUTHOR_SEQ")
 public class Author implements Serializable{
     
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "AUTHOR_SEQ")
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
     
     @Column(nullable = false)
     private String nome;
@@ -38,17 +36,11 @@ public class Author implements Serializable{
     @Column
     private LocalDate nascimento;
     
-    @Column
+    @Column(columnDefinition = "TEXT")
     private String retrato;
     
 //    Constructors
     public Author() {
-        this.nome = "NOME PADRÃO";
-        this.sobrenome = "SOBRENOME PADRÃO";
-        this.nacionalidade = Nacionalidade.BRASIL;
-        this.redes = "@rede_padrão";
-        this.nascimento = LocalDate.now();
-        this.retrato = "RetratoPadrão.png";
     }
 
     public Author(String nome, String sobrenome, Nacionalidade nacionalidade, String redes, LocalDate nascimento, String retrato) {
@@ -61,16 +53,16 @@ public class Author implements Serializable{
     }
     
 //    Setters
-    public void setId(Long id) {
+    public void setId(long id) {
         this.id = id;
     }
 
     public void setNome(String nome) {
-        this.nome = nome;
+        this.nome = nome.trim();
     }
 
     public void setSobrenome(String sobrenome) {
-        this.sobrenome = sobrenome;
+        this.sobrenome = sobrenome.trim();
     }
 
     public void setNacionalidade(Nacionalidade nacionalidade) {
@@ -78,7 +70,7 @@ public class Author implements Serializable{
     }
 
     public void setRedes(String redes) {
-        this.redes = redes.toLowerCase();
+        this.redes = redes.trim().toLowerCase();
     }
 
     public void setNascimento(LocalDate nascimento) {
@@ -86,11 +78,11 @@ public class Author implements Serializable{
     }
 
     public void setRetrato(String retrato) {
-        this.retrato = retrato;
+        this.retrato = retrato.trim();
     }
     
 //    Getters
-    public Long getId() {
+    public long getId() {
         return this.id;
     }
 

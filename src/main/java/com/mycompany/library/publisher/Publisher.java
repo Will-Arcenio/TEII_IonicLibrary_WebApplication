@@ -12,12 +12,11 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "publishers", schema = "public")
-@SequenceGenerator(name = "PUBLISHER_SEQ", sequenceName = "PUBLISHER_SEQ")
 public class Publisher implements Serializable{
     
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "PUBLISHER_SEQ")
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
     
     @Column(nullable = false)
     private String nome;
@@ -28,7 +27,7 @@ public class Publisher implements Serializable{
     @Column
     private String telefone;
     
-    @Column
+    @Column(columnDefinition = "TEXT")
     private String foto;
     
     @Column
@@ -37,10 +36,10 @@ public class Publisher implements Serializable{
     @Column
     private String email;
     
-    @Column
+    @Column(columnDefinition = "TEXT")
     private String localizacao;
     
-    @Column
+    @Column(columnDefinition = "TEXT")
     private String iframeMap;
     
 //    Constructors
@@ -61,16 +60,16 @@ public class Publisher implements Serializable{
     
     
 //    Setters
-    public void setId(Long id) {
+    public void setId(long id) {
         this.id = id;
     }
     
     public void setNome(String nome) {
-        this.nome = nome;
+        this.nome = nome.trim();
     }
     
     public void setEndereco(String endereco) {
-        this.endereco = endereco;
+        this.endereco = endereco.trim();
     }
     
     public void setTelefone(String telefone) {
@@ -78,28 +77,28 @@ public class Publisher implements Serializable{
     }
     
     public void setFoto(String foto) {
-        this.foto = foto.toLowerCase();
+        this.foto = foto.trim();
     }
     
     public void setSite(String site) {
-        this.site = site.toLowerCase();
+        this.site = site.trim();
     }
     
     public void setEmail(String email) {
-        this.email = email.toLowerCase();
+        this.email = email.trim().toLowerCase();
     }
     
     public void setLocalizacao(String localizacao) {
-        this.localizacao = localizacao.toLowerCase();
+        this.localizacao = localizacao.trim();
     }
     
     public void setIframeMap(String iframeMap) {
-        this.iframeMap = iframeMap.toLowerCase();
+        this.iframeMap = iframeMap.trim();
     }
     
     
 //    Getters
-    public Long getId() {
+    public long getId() {
         return this.id;
     }
     
