@@ -35,15 +35,15 @@ public class BookService {
     }
     
     public Book update(Book bookUpdated) throws RegraNegocioException {
-        valida(bookUpdated);
+        this.checkPrice(bookUpdated);
         this.checkPublicationDate(bookUpdated);
         entityManager.merge(bookUpdated);
         return bookUpdated;
     }
     
     private void valida(Book book) throws RegraNegocioException {
-        validaExistenciaReferencia(book);
-        validaExistenciaBook(book);
+        this.validaExistenciaReferencia(book);
+        this.validaExistenciaBook(book);
     }
     
     private void validaExistenciaReferencia(Book book) throws RegraNegocioException {
