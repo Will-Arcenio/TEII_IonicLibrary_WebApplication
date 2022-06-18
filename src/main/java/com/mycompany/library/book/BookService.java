@@ -70,6 +70,10 @@ public class BookService {
         return entityManager.createQuery("SELECT b FROM Book b", Book.class).getResultList();
     }
     
+    public List<Book> findLastFiveBooks() {
+        return entityManager.createQuery("SELECT b FROM Book b ORDER BY b.id DESC", Book.class).setMaxResults(5).getResultList();
+    }
+    
     public List<Book> search(String nome) {
         return entityManager
                 .createQuery("SELECT b FROM Book nome b WHERE LOWER(b.nome) LIKE :nome", Book.class)

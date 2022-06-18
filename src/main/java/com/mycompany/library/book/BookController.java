@@ -32,6 +32,12 @@ public class BookController {
     }
     
     @GET
+    @Path("lastbooks")
+    public List<Book> findLastFiveBooks() {
+        return this.bookService.findLastFiveBooks();
+    }
+    
+    @GET
     @Path("{id}")
     public Book findById(@PathParam("id") Long id) {
         Book book = this.bookService.findById(id);
