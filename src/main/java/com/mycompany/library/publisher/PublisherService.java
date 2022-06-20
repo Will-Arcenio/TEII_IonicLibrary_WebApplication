@@ -5,6 +5,8 @@ import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.ws.rs.WebApplicationException;
+import javax.ws.rs.core.Response;
 
 @Stateless
 public class PublisherService {
@@ -17,6 +19,7 @@ public class PublisherService {
     }
     
     public Publisher add(Publisher publisher) {
+        this.checkPublisherExists(publisher);
         entityManager.persist(publisher);
         return publisher;
     }
@@ -41,5 +44,18 @@ public class PublisherService {
                 .createQuery("SELECT p FROM Publisher email p WHERE LOWER(p.email) LIKE :email", Publisher.class)
                 .setParameter("nome", "%" + email.toLowerCase() + "%")
                 .getResultList();
+    }
+    
+//  Regras de Negócio / Validações
+    /* VALIDA SE EDITORA JÁ ESTÁ CADASTRADA */
+    public void checkPublisherExists(Publisher publisher) {
+        List<Publisher> resultList = entityManager
+                .createQuery("SELECT p FROM Publisher p WHERE LOWER(p.nome) = :nome")
+                .setParameter("nome", publisher.getNome().trim().toLowerCase())
+                .getResultList();
+        
+        if (resultList != null && !resultList.isEmpty()) {
+            throw new WebApplicationException("A editora '" + publisher.getNome() + "' já está cadastrada na nossa base.", Response.Status.BAD_REQUEST);
+        }
     }
 }
